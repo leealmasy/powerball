@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Powerball Winning Numbers</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: #2a2a40;
+    --accent: #e63946;
+    --accent2: #f4a261;
+    --gold: #ffd700;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --green: #2dc653;
+    --pb-red: #cc2936;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .logo span { color: var(--accent); }
+
+  header .tagline {
+    color: var(--muted);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 1px;
+  }
+
+  /* Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: calc(100vh - 61px);
+  }
+
+  /* Sidebar */
+  .sidebar {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    overflow-y: auto;
+    max-height: calc(100vh - 61px);
+    position: sticky;
+    top: 61px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .radio-group { display: flex; flex-direction: column; gap: 8px; }
+
+  .radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-size: 13px;
+  }
+
+  .radio-option:hover { border-color: var(--accent); background: rgba(230,57,70,0.06); }
+  .radio-option input { accent-color: var(--accent); }
+  .radio-option.selected { border-color: var(--accent); background: rgba(230,57,70,0.10); }
+
+  label.field-label {
+    display: block;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+  }
+
+  input[type="text"], input[type="number"], select {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-family: 'DM Mono', monospace;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]:focus, input[type="number"]:focus {
+    border-color: var(--accent);
+  }
+
+  .check-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .check-row input { accent-color: var(--accent); }
+
+  .btn {
+    width: 100%;
+    padding: 11px;
+    border: none;
+    border-radius: 7px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: #c0313d; }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  .btn-gold {
+    background: linear-gradient(135deg, #b8860b, var(--gold));
+    color: #000;
+  }
+
+  .btn-gold:hover { filter: brightness(1.1); }
+
+  /* Tabs */
+  .main-area {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    padding: 0 20px;
+    gap: 2px;
+  }
+
+  .tab {
+    padding: 14px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .tab-content { display: none; flex: 1; overflow-y: auto; padding: 20px; }
+  .tab-content.active { display: block; }
+
+  /* Status bar */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+  }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .status-dot.active { background: var(--green); animation: pulse 1.5s infinite; }
+  .status-dot.error { background: var(--accent); }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; } 50% { opacity: 0.4; }
+  }
+
+  .progress-bar {
+    height: 2px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+    border-radius: 1px;
+    flex: 1;
+  }
+
+  .progress-bar .fill {
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.3s;
+    border-radius: 1px;
+  }
+
+  .progress-bar.indeterminate .fill {
+    width: 40%;
+    animation: indeterminate 1.2s ease-in-out infinite;
+  }
+
+  @keyframes indeterminate {
+    0% { left: -40%; } 100% { left: 100%; }
+  }
+
+  /* Draw table */
+  .draws-header {
+    display: grid;
+    grid-template-columns: 110px 1fr 60px 80px 60px;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px 8px 0 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .draws-body {
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    overflow: hidden;
+    max-height: calc(100vh - 240px);
+    overflow-y: auto;
+  }
+
+  .draw-row {
+    display: grid;
+    grid-template-columns: 110px 1fr 60px 80px 60px;
+    gap: 8px;
+    padding: 9px 16px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background 0.1s;
+  }
+
+  .draw-row:hover { background: var(--surface2); }
+  .draw-row:last-child { border-bottom: none; }
+
+  .draw-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .balls {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .ball {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(255,255,255,0.15);
+  }
+
+  .ball.main {
+    background: linear-gradient(145deg, #1e2a4a, #0f1528);
+    color: var(--text);
+  }
+
+  .ball.pb {
+    background: linear-gradient(145deg, #8b1a1a, var(--pb-red));
+    color: #fff;
+    border-color: rgba(255,100,100,0.3);
+  }
+
+  .ball.match-main {
+    background: linear-gradient(145deg, #1a4a1e, #0f280f);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  .ball.match-pb {
+    background: linear-gradient(145deg, #4a1a1e, #2a0f0f);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .mult-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    background: rgba(244,162,97,0.1);
+    border: 1px solid rgba(244,162,97,0.25);
+    border-radius: 4px;
+    padding: 2px 7px;
+    display: inline-block;
+    width: fit-content;
+  }
+
+  .draw-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-align: right;
+  }
+
+  /* Welcome / empty state */
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+  }
+
+  .empty-state .icon {
+    font-size: 52px;
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  .empty-state h3 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 26px;
+    letter-spacing: 2px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .empty-state p { font-size: 14px; line-height: 1.6; max-width: 380px; margin: 0 auto; }
+
+  /* Stats grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-card .value {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 32px;
+    letter-spacing: 1px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .stat-card .label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* Frequency chart */
+  .freq-chart { margin-bottom: 20px; }
+  .freq-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .freq-bars {
+    display: flex;
+    gap: 3px;
+    align-items: flex-end;
+    height: 80px;
+  }
+
+  .freq-bar-wrap {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    position: relative;
+  }
+
+  .freq-bar {
+    width: 100%;
+    min-height: 3px;
+    border-radius: 2px 2px 0 0;
+    background: var(--accent);
+    transition: height 0.5s ease;
+    cursor: pointer;
+  }
+
+  .freq-bar:hover { filter: brightness(1.3); }
+
+  .freq-bar.pb-bar { background: var(--pb-red); }
+
+  .freq-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Overdue analysis */
+  .number-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .num-chip {
+    width: 34px; height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: default;
+    transition: transform 0.1s;
+  }
+
+  .num-chip:hover { transform: scale(1.1); }
+  .num-chip.overdue { background: rgba(230,57,70,0.15); color: var(--accent); border: 1px solid rgba(230,57,70,0.3); }
+  .num-chip.hot { background: rgba(244,162,97,0.15); color: var(--accent2); border: 1px solid rgba(244,162,97,0.3); }
+  .num-chip.drawn { background: var(--surface2); color: var(--muted); border: 1px solid var(--border); }
+
+  /* Search result */
+  .search-result {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+
+  .search-result-header {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .search-result-header.exact { background: rgba(45,198,83,0.15); color: var(--green); }
+  .search-result-header.partial { background: rgba(244,162,97,0.15); color: var(--accent2); }
+  .search-result-header.none { background: rgba(112,112,160,0.1); color: var(--muted); }
+
+  .search-result-body { padding: 12px 16px; }
+
+  .match-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .match-row:last-child { border-bottom: none; }
+
+  .match-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 90px;
+  }
+
+  .match-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent2);
+    min-width: 80px;
+  }
+
+  /* Suggestion box */
+  .suggestion-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 12px;
+  }
+
+  .suggestion-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .suggestion-balls {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .copy-btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 8px;
+  }
+
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 13px;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.25s;
+    z-index: 999;
+    max-width: 320px;
+  }
+
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+  .section-divider {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    margin: 20px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pill {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .pill.red { border-color: rgba(230,57,70,0.4); color: var(--accent); background: rgba(230,57,70,0.08); }
+  .pill.gold { border-color: rgba(255,215,0,0.4); color: var(--gold); background: rgba(255,215,0,0.08); }
+  .pill.green { border-color: rgba(45,198,83,0.4); color: var(--green); background: rgba(45,198,83,0.08); }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { max-height: none; position: static; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div class="logo">🎱 Power<span>Ball</span></div>
+    <div class="tagline">WINNING NUMBERS · LIVE API & ANALYSIS</div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div>
+      <div class="section-label">Data Source</div>
+      <div class="card">
+        <div class="radio-group">
+          <label class="radio-option selected" id="opt-live">
+            <input type="radio" name="source" value="live" checked onchange="updateSource(this)"> 🌐 Live API (NY Open Data)
+          </label>
+          <label class="radio-option" id="opt-offline">
+            <input type="radio" name="source" value="offline" onchange="updateSource(this)"> 🔒 Offline Sample Data
+          </label>
+          <label class="radio-option" id="opt-csv">
+            <input type="radio" name="source" value="csv" onchange="updateSource(this)"> 📁 Load CSV File
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div id="api-config">
+      <div class="section-label">API Config (Optional)</div>
+      <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <label class="field-label">Proxy URL</label>
+          <input type="text" id="proxy-url" placeholder="http://proxy:port">
+        </div>
+        <label class="check-row">
+          <input type="checkbox" id="use-proxy"> Use Proxy
+        </label>
+        <label class="check-row">
+          <input type="checkbox" id="disable-ssl"> Disable SSL Verification
+        </label>
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Number of Draws</div>
+      <div class="card">
+        <input type="number" id="num-results" value="250" min="10" max="1000">
+      </div>
+    </div>
+
+    <div>
+      <div class="section-label">Check Your Numbers</div>
+      <div class="card" style="display:flex;flex-direction:column;gap:10px;">
+        <div>
+          <label class="field-label">Format: 1,15,25,35,45 PB:12</label>
+          <input type="text" id="search-input" placeholder="1,15,25,35,45 PB:12">
+        </div>
+        <button class="btn btn-secondary" onclick="searchNumbers()">🔎 Check Numbers</button>
+        <button class="btn btn-secondary" onclick="document.getElementById('search-input').value=''">✕ Clear</button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="fetch-btn" onclick="fetchNumbers()">🎯 Fetch Winning Numbers</button>
+    <button class="btn btn-secondary" onclick="clearDisplay()">🗑 Clear Display</button>
+    <input type="file" id="csv-file" accept=".csv" style="display:none" onchange="loadCSV(event)">
+  </aside>
+
+  <!-- Main area -->
+  <div class="main-area">
+    <div class="status-bar">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">Ready — select a source and fetch</span>
+      <div class="progress-bar" id="progress-bar" style="display:none">
+        <div class="fill indeterminate"></div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('main', this)">🎯 Main Display</div>
+      <div class="tab" onclick="showTab('analysis', this)">📊 Overdue & Hot Numbers</div>
+      <div class="tab" onclick="showTab('stats', this)">📈 Statistics</div>
+    </div>
+
+    <!-- MAIN TAB -->
+    <div class="tab-content active" id="tab-main">
+      <div id="main-display">
+        <div class="empty-state">
+          <span class="icon">🎱</span>
+          <h3>Powerball Numbers Awaits</h3>
+          <p>Select a data source on the left and click <strong>Fetch Winning Numbers</strong> to load historical Powerball draws.</p>
+          <p style="margin-top:12px;font-size:12px;font-family:'DM Mono',monospace;color:var(--muted)">Up to 1,000 draws · Real NY State data · Search your numbers</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYSIS TAB -->
+    <div class="tab-content" id="tab-analysis">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card">
+          <div class="section-label" style="margin-bottom:12px">Analysis Period</div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <div style="flex:1;min-width:120px;">
+              <label class="field-label">Last N Draws</label>
+              <input type="number" id="analysis-period" value="50" min="10" max="500" style="max-width:100px;">
+            </div>
+            <button class="btn btn-secondary" style="width:auto;padding:9px 16px;" onclick="findOverdue()">🔍 Overdue Numbers</button>
+            <button class="btn btn-secondary" style="width:auto;padding:9px 16px;" onclick="findHot()">🔥 Hot Numbers</button>
+            <button class="btn btn-gold" style="width:auto;padding:9px 16px;" onclick="generateLucky()">🍀 Lucky Numbers</button>
+          </div>
+        </div>
+
+        <div id="analysis-display">
+          <div class="empty-state">
+            <span class="icon">📊</span>
+            <h3>Analysis Ready</h3>
+            <p>Fetch data in the Main Display tab first, then use the controls above to analyse overdue or hot numbers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS TAB -->
+    <div class="tab-content" id="tab-stats">
+      <div id="stats-display">
+        <div class="empty-state">
+          <span class="icon">📈</span>
+          <h3>Statistics</h3>
+          <p>Fetch Powerball data to see frequency analysis, averages, and distribution charts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ─── State ─────────────────────────────────────────────────────────
+let currentData = [];
+let currentSource = 'live';
+
+// ─── UI Helpers ─────────────────────────────────────────────────────
+function setStatus(text, type='idle') {
+  document.getElementById('status-text').textContent = text;
+  const dot = document.getElementById('status-dot');
+  dot.className = 'status-dot' + (type==='loading'?' active':type==='error'?' error':'');
+}
+
+function showProgress(visible) {
+  document.getElementById('progress-bar').style.display = visible ? '' : 'none';
+}
+
+function showTab(id, el) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  el.classList.add('active');
+}
+
+function updateSource(radio) {
+  currentSource = radio.value;
+  document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+  radio.closest('.radio-option').classList.add('selected');
+}
+
+function toast(msg, duration=3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+function clearDisplay() {
+  currentData = [];
+  document.getElementById('main-display').innerHTML = `
+    <div class="empty-state">
+      <span class="icon">🗑</span>
+      <h3>Cleared</h3>
+      <p>Click Fetch Winning Numbers to load data.</p>
+    </div>`;
+  document.getElementById('stats-display').innerHTML = '<div class="empty-state"><span class="icon">📈</span><h3>Statistics</h3><p>Fetch data to see stats.</p></div>';
+  document.getElementById('analysis-display').innerHTML = '<div class="empty-state"><span class="icon">📊</span><h3>Analysis Ready</h3><p>Fetch data first, then run analysis.</p></div>';
+  setStatus('Cleared');
+}
+
+// ─── Ball renderer ──────────────────────────────────────────────────
+function renderBall(num, type='main', extra='') {
+  return `<div class="ball ${type} ${extra}">${num}</div>`;
+}
+
+function renderDraw(draw, idx, matchedMains=null, matchedPB=false) {
+  const mballs = draw.numbers.map(n => {
+    const matched = matchedMains && matchedMains.includes(parseInt(n));
+    return renderBall(n.toString().padStart(2,'0'), 'main', matched ? 'match-main' : '');
+  }).join('');
+  const pbBall = renderBall(draw.powerball.toString().padStart(2,'0'), 'pb', (matchedMains && matchedPB) ? 'match-pb' : '');
+  const mult = draw.multiplier && draw.multiplier !== '1' ? `<span class="mult-badge">${draw.multiplier}x</span>` : '';
+  return `
+    <div class="draw-row">
+      <div class="draw-date">${draw.date}</div>
+      <div class="balls">${mballs}${pbBall}</div>
+      <div>${mult}</div>
+      <div></div>
+      <div class="draw-num">#${idx+1}</div>
+    </div>`;
+}
+
+// ─── Display results ─────────────────────────────────────────────────
+function displayResults(data, sourceName) {
+  currentData = data;
+  const container = document.getElementById('main-display');
+
+  if (!data.length) {
+    container.innerHTML = '<div class="empty-state"><span class="icon">⚠️</span><h3>No Data</h3><p>No results returned. Try offline mode or check your connection.</p></div>';
+    return;
+  }
+
+  let html = `
+    <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+      <div>
+        <span class="pill gold">${data.length} Draws</span>
+        <span class="pill" style="margin-left:6px;">${sourceName}</span>
+      </div>
+      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);">
+        ${data[0].date} → ${data[data.length-1].date}
+      </span>
+    </div>
+    <div class="draws-header">
+      <span>Date</span><span>Numbers</span><span>Mult</span><span></span><span style="text-align:right">#</span>
+    </div>
+    <div class="draws-body" id="draws-body">`;
+
+  data.forEach((draw, i) => { html += renderDraw(draw, i); });
+  html += '</div>';
+  container.innerHTML = html;
+
+  buildStats(data);
+  setStatus(`Loaded ${data.length} draws from ${sourceName}`);
+}
+
+// ─── Statistics ──────────────────────────────────────────────────────
+function buildStats(data) {
+  const allMain = [], allPB = [];
+  data.forEach(d => {
+    d.numbers.forEach(n => allMain.push(parseInt(n)));
+    allPB.push(parseInt(d.powerball));
+  });
+
+  const countMap = arr => arr.reduce((m, n) => { m[n] = (m[n]||0)+1; return m; }, {});
+  const mainCounts = countMap(allMain);
+  const pbCounts = countMap(allPB);
+
+  const topMain = Object.entries(mainCounts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const topPB   = Object.entries(pbCounts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const avgMain = (allMain.reduce((a,b)=>a+b,0)/allMain.length).toFixed(1);
+  const avgPB   = (allPB.reduce((a,b)=>a+b,0)/allPB.length).toFixed(1);
+
+  // Frequency chart data (main numbers 1–69, grouped in bins of 10)
+  const bins = Array.from({length:7}, (_,i) => {
+    const lo = i*10+1, hi = Math.min(i*10+10, 69);
+    let count = 0;
+    for (let n = lo; n <= hi; n++) count += mainCounts[n]||0;
+    return { label: `${lo}-${hi}`, count };
+  });
+  const maxBin = Math.max(...bins.map(b=>b.count), 1);
+
+  const barsHtml = bins.map(b => `
+    <div class="freq-bar-wrap">
+      <div class="freq-bar" style="height:${Math.max(4, Math.round(70 * b.count/maxBin))}px" title="${b.label}: ${b.count}x"></div>
+      <div class="freq-label">${b.label}</div>
+    </div>`).join('');
+
+  // PB bars
+  const pbBins = Array.from({length:5}, (_,i) => {
+    const lo = i*6-5, hi = i*6;
+    let label, count;
+    if (i===0) { label='1-5'; count=Object.entries(pbCounts).filter(([k])=>k<=5).reduce((a,[,v])=>a+v,0); }
+    else { label=`${i*5+1}-${Math.min(i*5+5,26)}`; count=Object.entries(pbCounts).filter(([k])=>k>i*5&&k<=i*5+5).reduce((a,[,v])=>a+v,0); }
+    return { label, count };
+  });
+  const maxPBBin = Math.max(...pbBins.map(b=>b.count), 1);
+  const pbBarsHtml = pbBins.map(b => `
+    <div class="freq-bar-wrap">
+      <div class="freq-bar pb-bar" style="height:${Math.max(4, Math.round(70 * b.count/maxPBBin))}px" title="${b.label}: ${b.count}x"></div>
+      <div class="freq-label">${b.label}</div>
+    </div>`).join('');
+
+  document.getElementById('stats-display').innerHTML = `
+    <div class="stats-grid">
+      <div class="stat-card"><div class="value">${data.length}</div><div class="label">Total Draws</div></div>
+      <div class="stat-card"><div class="value">${topMain[0]?.[0]||'—'}</div><div class="label">Hottest Main</div></div>
+      <div class="stat-card"><div class="value">${topPB[0]?.[0]||'—'}</div><div class="label">Hottest PB</div></div>
+      <div class="stat-card"><div class="value">${avgMain}</div><div class="label">Avg Main #</div></div>
+      <div class="stat-card"><div class="value">${avgPB}</div><div class="label">Avg Powerball</div></div>
+    </div>
+
+    <div class="card freq-chart" style="margin-bottom:16px;">
+      <div class="freq-title">Main Number Distribution (by range)</div>
+      <div class="freq-bars">${barsHtml}</div>
+    </div>
+
+    <div class="card freq-chart" style="margin-bottom:16px;">
+      <div class="freq-title">Powerball Distribution (by range)</div>
+      <div class="freq-bars">${pbBarsHtml}</div>
+    </div>
+
+    <div class="section-divider" style="font-size:14px;">Top 10 Most Frequent Main Numbers</div>
+    <div class="number-grid">
+      ${Object.entries(mainCounts).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([n,c])=>`
+        <div style="text-align:center;">
+          <div class="ball main" style="margin:0 auto 3px;border-color:var(--accent2);">${String(n).padStart(2,'0')}</div>
+          <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);">${c}x</div>
+        </div>`).join('')}
+    </div>
+
+    <div class="section-divider" style="font-size:14px;">Top 5 Most Frequent Powerballs</div>
+    <div class="number-grid">
+      ${Object.entries(pbCounts).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([n,c])=>`
+        <div style="text-align:center;">
+          <div class="ball pb" style="margin:0 auto 3px;">${String(n).padStart(2,'0')}</div>
+          <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);">${c}x</div>
+        </div>`).join('')}
+    </div>
+  `;
+}
+
+// ─── Fetch ────────────────────────────────────────────────────────────
+async function fetchNumbers() {
+  const btn = document.getElementById('fetch-btn');
+  btn.disabled = true;
+  setStatus('Fetching…', 'loading');
+  showProgress(true);
+
+  const num = parseInt(document.getElementById('num-results').value) || 250;
+
+  try {
+    let data = [];
+    if (currentSource === 'live') {
+      data = await fetchFromAPI(num);
+      if (!data.length) {
+        toast('⚠️ Live API failed — try offline or CSV mode');
+        data = generateSample(num);
+      }
+      displayResults(data, '🌐 NY State Open Data');
+    } else if (currentSource === 'offline') {
+      data = generateSample(num);
+      displayResults(data, '🔒 Offline Sample');
+    } else if (currentSource === 'csv') {
+      document.getElementById('csv-file').click();
+      btn.disabled = false;
+      showProgress(false);
+      setStatus('Ready');
+      return;
+    }
+  } catch(e) {
+    setStatus('Error: ' + e.message, 'error');
+    toast('❌ ' + e.message);
+  } finally {
+    btn.disabled = false;
+    showProgress(false);
+    setStatus(`Loaded ${currentData.length} draws`, 'idle');
+  }
+}
+
+async function fetchFromAPI(num) {
+  const url = `https://data.ny.gov/resource/d6yy-54nr.json?$limit=${num}&$order=draw_date%20DESC`;
+  const resp = await fetch(url, { headers: { 'Accept': 'application/json' }, signal: AbortSignal.timeout(12000) });
+  if (!resp.ok) throw new Error(`API returned ${resp.status}`);
+  const json = await resp.json();
+  return parseSocrata(json);
+}
+
+function parseSocrata(data) {
+  const results = [];
+  data.forEach(entry => {
+    try {
+      const dateRaw = entry.draw_date || '';
+      const winStr  = entry.winning_numbers || '';
+      if (!dateRaw || !winStr) return;
+      const dateObj = new Date(dateRaw);
+      const date = dateObj.toLocaleDateString('en-US', { month:'2-digit', day:'2-digit', year:'numeric' });
+      const nums = winStr.trim().split(' ');
+      if (nums.length < 6) return;
+      results.push({ date, sortDate: dateObj.getTime(), numbers: nums.slice(0,5), powerball: nums[5], multiplier: entry.multiplier || '1' });
+    } catch(_) {}
+  });
+  results.sort((a,b) => b.sortDate - a.sortDate);
+  return results;
+}
+
+// ─── Sample data ──────────────────────────────────────────────────────
+function generateSample(num) {
+  const results = [];
+  const seed = [
+    { date:'09/07/2025', numbers:['1','5','12','25','42'], powerball:'15', multiplier:'2' },
+    { date:'09/04/2025', numbers:['3','16','29','61','69'], powerball:'22', multiplier:'2' },
+    { date:'09/02/2025', numbers:['8','23','25','40','53'], powerball:'5', multiplier:'3' },
+    { date:'08/30/2025', numbers:['7','18','34','45','62'], powerball:'11', multiplier:'2' },
+    { date:'08/28/2025', numbers:['2','14','27','38','56'], powerball:'24', multiplier:'4' },
+  ];
+  seed.forEach(s => results.push({ ...s, sortDate: new Date(s.date).getTime() }));
+
+  let base = new Date('2025-08-26');
+  const mults = ['2','2','2','3','4','5','10'];
+  for (let i = seed.length; i < num; i++) {
+    base = new Date(base.getTime() - 2.5 * 86400000);
+    const nums = shuffle(Array.from({length:69},(_,k)=>k+1)).slice(0,5).sort((a,b)=>a-b).map(String);
+    const pb = String(Math.floor(Math.random()*26)+1);
+    results.push({ date: base.toLocaleDateString('en-US',{month:'2-digit',day:'2-digit',year:'numeric'}), sortDate: base.getTime(), numbers: nums, powerball: pb, multiplier: mults[Math.floor(Math.random()*mults.length)] });
+  }
+  results.sort((a,b) => b.sortDate - a.sortDate);
+  return results;
+}
+
+function shuffle(arr) { for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+
+// ─── CSV loader ───────────────────────────────────────────────────────
+function loadCSV(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  setStatus('Loading CSV…', 'loading');
+  showProgress(true);
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.split('\n');
+    const results = [];
+    lines.slice(1).forEach(line => {
+      const parts = line.split(',').map(p => p.trim().replace(/^"|"$/g,''));
+      if (parts.length < 6) return;
+      try {
+        const dateStr = parts[0];
+        const sortDate = new Date(dateStr).getTime();
+        results.push({ date: dateStr, sortDate, numbers: parts.slice(1,6), powerball: parts[6]||parts[5], multiplier: parts[7]||'1' });
+      } catch(_) {}
+    });
+    results.sort((a,b) => b.sortDate - a.sortDate);
+    displayResults(results, '📁 CSV File');
+    showProgress(false);
+  };
+  reader.readAsText(file);
+  event.target.value = '';
+}
+
+// ─── Search ───────────────────────────────────────────────────────────
+function searchNumbers() {
+  if (!currentData.length) { toast('Fetch data first!'); return; }
+  const raw = document.getElementById('search-input').value.trim().toUpperCase();
+  if (!raw) { toast('Enter your numbers first'); return; }
+
+  if (!raw.includes('PB:')) { toast('Format: 1,2,3,4,5 PB:6'); return; }
+  const [mainPart, pbPart] = raw.split('PB:');
+  const userPB = parseInt(pbPart.trim());
+  const userNums = mainPart.replace(/,/g,' ').trim().split(/\s+/).map(n=>parseInt(n)).filter(n=>!isNaN(n));
+
+  if (userNums.length !== 5) { toast('Enter exactly 5 main numbers'); return; }
+  if (isNaN(userPB) || userPB < 1 || userPB > 26) { toast('Powerball must be 1-26'); return; }
+  if (userNums.some(n => n<1 || n>69)) { toast('Main numbers must be 1-69'); return; }
+
+  const userSet = new Set(userNums);
+  const exactMatches = [], partials = [];
+
+  currentData.forEach((draw, idx) => {
+    const drawNums = draw.numbers.map(Number);
+    const drawPB   = parseInt(draw.powerball);
+    const drawSet  = new Set(drawNums);
+    const matching = [...userSet].filter(n => drawSet.has(n));
+    const pbMatch  = drawPB === userPB;
+
+    if (matching.length === 5 && pbMatch) {
+      exactMatches.push({ draw, idx, matching, pbMatch });
+    } else if (matching.length >= 3 || (matching.length >= 2 && pbMatch)) {
+      partials.push({ draw, idx, matching, pbMatch });
+    }
+  });
+
+  const container = document.getElementById('main-display');
+  const userBalls = [...userNums].sort((a,b)=>a-b).map(n=>`<div class="ball main">${String(n).padStart(2,'0')}</div>`).join('');
+  const userPBBall = `<div class="ball pb">${String(userPB).padStart(2,'0')}</div>`;
+
+  let html = `
+    <div style="margin-bottom:16px;">
+      <div class="section-label">Your Numbers</div>
+      <div class="balls" style="margin-top:8px;">${userBalls}${userPBBall}</div>
+    </div>`;
+
+  if (exactMatches.length) {
+    html += `<div class="search-result">
+      <div class="search-result-header exact">🎉 Jackpot Match! Found ${exactMatches.length} exact match(es)</div>
+      <div class="search-result-body">`;
+    exactMatches.forEach(({draw, idx}) => {
+      html += `<div class="match-row">
+        <div class="match-date">${draw.date}</div>
+        <div class="balls">${draw.numbers.map(n=>`<div class="ball main match-main">${String(n).padStart(2,'0')}</div>`).join('')}<div class="ball pb match-pb">${String(draw.powerball).padStart(2,'0')}</div></div>
+        <div class="match-score">JACKPOT</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  if (partials.length) {
+    html += `<div class="search-result">
+      <div class="search-result-header partial">🎯 ${partials.length} partial match(es) found</div>
+      <div class="search-result-body">`;
+    partials.slice(0, 8).forEach(({draw, idx, matching, pbMatch}) => {
+      const mballs = draw.numbers.map(n => {
+        const isMatch = userSet.has(parseInt(n));
+        return `<div class="ball main ${isMatch?'match-main':''}">${String(n).padStart(2,'0')}</div>`;
+      }).join('');
+      html += `<div class="match-row">
+        <div class="match-date">${draw.date}</div>
+        <div class="balls">${mballs}<div class="ball pb ${pbMatch?'match-pb':''}">${String(draw.powerball).padStart(2,'0')}</div></div>
+        <div class="match-score">${matching.length}/5${pbMatch?' +PB':''}</div>
+      </div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  if (!exactMatches.length && !partials.length) {
+    html += `<div class="search-result">
+      <div class="search-result-header none">❌ No significant matches found in ${currentData.length} draws</div>
+      <div class="search-result-body" style="color:var(--muted);font-size:13px;padding-top:12px;">
+        Your combination hasn't appeared (or closely appeared) historically. Keep playing — each draw is independent!
+      </div>
+    </div>`;
+  }
+
+  html += `<div style="margin-top:12px;"><button class="btn btn-secondary" style="max-width:200px;" onclick="displayResults(currentData,'Restored')">← Back to Full List</button></div>`;
+  container.innerHTML = html;
+
+  // Switch to main tab
+  showTab('main', document.querySelector('.tab'));
+}
+
+// ─── Overdue analysis ─────────────────────────────────────────────────
+function findOverdue() {
+  if (!currentData.length) { toast('Fetch data first!'); return; }
+  const n = parseInt(document.getElementById('analysis-period').value) || 50;
+  const recent = currentData.slice(0, Math.min(n, currentData.length));
+
+  const drawnMain = new Set(), drawnPB = new Set();
+  recent.forEach(d => {
+    d.numbers.forEach(n => drawnMain.add(parseInt(n)));
+    drawnPB.add(parseInt(d.powerball));
+  });
+
+  const allMain = Array.from({length:69},(_,i)=>i+1);
+  const allPB   = Array.from({length:26},(_,i)=>i+1);
+  const overdueMain = allMain.filter(n => !drawnMain.has(n));
+  const overduePB   = allPB.filter(n => !drawnPB.has(n));
+
+  let html = `
+    <div class="section-divider">🔍 Overdue Numbers <span class="pill red">Last ${recent.length} draws</span></div>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:14px;">${recent[recent.length-1].date} → ${recent[0].date}</p>
+
+    <div class="card" style="margin-bottom:14px;">
+      <div class="section-label" style="margin-bottom:10px;">Overdue Main Numbers (${overdueMain.length} of 69 not drawn)</div>
+      <div class="number-grid">
+        ${allMain.map(n => `<div class="num-chip ${drawnMain.has(n)?'drawn':'overdue'}">${String(n).padStart(2,'0')}</div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px;">
+      <div class="section-label" style="margin-bottom:10px;">Overdue Powerballs (${overduePB.length} of 26 not drawn)</div>
+      <div class="number-grid">
+        ${allPB.map(n => `<div class="num-chip ${drawnPB.has(n)?'drawn':'overdue'}">${String(n).padStart(2,'0')}</div>`).join('')}
+      </div>
+    </div>`;
+
+  if (overdueMain.length >= 5 && overduePB.length >= 1) {
+    const pick5 = shuffle([...overdueMain]).slice(0,5).sort((a,b)=>a-b);
+    const pickPB = overduePB[Math.floor(Math.random()*overduePB.length)];
+    const fmt = `${pick5.join(',')} PB:${pickPB}`;
+
+    html += `<div class="suggestion-box">
+      <div class="suggestion-label">Suggested overdue combo</div>
+      <div class="suggestion-balls">
+        ${pick5.map(n=>`<div class="ball main">${String(n).padStart(2,'0')}</div>`).join('')}
+        <div class="ball pb">${String(pickPB).padStart(2,'0')}</div>
+      </div>
+      <button class="copy-btn" onclick="copyToSearch('${fmt}')">📋 Copy to Check My Numbers</button>
+    </div>`;
+  }
+
+  html += `<p style="font-size:11px;color:var(--muted);margin-top:14px;font-family:'DM Mono',monospace;">
+    <span style="color:var(--accent);">■</span> Overdue &nbsp;
+    <span style="color:var(--border);border:1px solid var(--border);">■</span> Drawn — Each draw is independent; past results don't affect future odds.
+  </p>`;
+
+  document.getElementById('analysis-display').innerHTML = html;
+  showTab('analysis', document.querySelectorAll('.tab')[1]);
+}
+
+function findHot() {
+  if (!currentData.length) { toast('Fetch data first!'); return; }
+  const n = parseInt(document.getElementById('analysis-period').value) || 50;
+  const recent = currentData.slice(0, Math.min(n, currentData.length));
+
+  const mainCounts = {}, pbCounts = {};
+  recent.forEach(d => {
+    d.numbers.forEach(n => { const k=parseInt(n); mainCounts[k]=(mainCounts[k]||0)+1; });
+    const p=parseInt(d.powerball); pbCounts[p]=(pbCounts[p]||0)+1;
+  });
+
+  const sortedMain = Object.entries(mainCounts).sort((a,b)=>b[1]-a[1]);
+  const sortedPB   = Object.entries(pbCounts).sort((a,b)=>b[1]-a[1]);
+
+  const pick5 = sortedMain.slice(0, 7).map(([n])=>parseInt(n));
+  shuffle(pick5);
+  const hot5 = pick5.slice(0,5).sort((a,b)=>a-b);
+  const hotPB = parseInt(sortedPB[0][0]);
+
+  let html = `
+    <div class="section-divider">🔥 Hot Numbers <span class="pill" style="border-color:var(--accent2);color:var(--accent2);">Last ${recent.length} draws</span></div>
+
+    <div class="card" style="margin-bottom:14px;">
+      <div class="section-label" style="margin-bottom:12px;">Top 15 Most Frequent Main Numbers</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        ${sortedMain.slice(0,15).map(([n,c],i) => `
+          <div style="text-align:center;">
+            <div class="ball main" style="margin:0 auto 4px;border-color:${i<3?'var(--gold)':'var(--accent2)'};">${String(n).padStart(2,'0')}</div>
+            <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);">${c}x</div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:14px;">
+      <div class="section-label" style="margin-bottom:12px;">Top 8 Most Frequent Powerballs</div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        ${sortedPB.slice(0,8).map(([n,c],i) => `
+          <div style="text-align:center;">
+            <div class="ball pb" style="margin:0 auto 4px;">${String(n).padStart(2,'0')}</div>
+            <div style="font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);">${c}x</div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+  const fmt = `${hot5.join(',')} PB:${hotPB}`;
+  html += `<div class="suggestion-box">
+    <div class="suggestion-label">Suggested hot combo</div>
+    <div class="suggestion-balls">
+      ${hot5.map(n=>`<div class="ball main" style="border-color:var(--accent2);">${String(n).padStart(2,'0')}</div>`).join('')}
+      <div class="ball pb">${String(hotPB).padStart(2,'0')}</div>
+    </div>
+    <button class="copy-btn" onclick="copyToSearch('${fmt}')">📋 Copy to Check My Numbers</button>
+  </div>`;
+
+  document.getElementById('analysis-display').innerHTML = html;
+  showTab('analysis', document.querySelectorAll('.tab')[1]);
+}
+
+function generateLucky() {
+  const strategies = [];
+
+  // 1. Pure random
+  const r = shuffle(Array.from({length:69},(_,i)=>i+1)).slice(0,5).sort((a,b)=>a-b);
+  strategies.push({ name:'🎲 Completely Random', main:r, pb:Math.floor(Math.random()*26)+1, desc:'Pure random selection' });
+
+  // 2. Balanced low/high
+  const lo = shuffle(Array.from({length:34},(_,i)=>i+1)).slice(0,2);
+  const hi = shuffle(Array.from({length:35},(_,i)=>i+35)).slice(0,3);
+  strategies.push({ name:'⚖️ Balanced Low/High', main:[...lo,...hi].sort((a,b)=>a-b), pb:Math.floor(Math.random()*26)+1, desc:'2 low (1–34) + 3 high (35–69)' });
+
+  // 3. Hot & cold if data available
+  if (currentData.length >= 20) {
+    const n = parseInt(document.getElementById('analysis-period').value)||50;
+    const recent = currentData.slice(0,Math.min(n,currentData.length));
+    const mc={};
+    recent.forEach(d=>d.numbers.forEach(n=>{const k=parseInt(n);mc[k]=(mc[k]||0)+1;}));
+    const hot = Object.entries(mc).sort((a,b)=>b[1]-a[1]).slice(0,15).map(([k])=>parseInt(k));
+    const allNs = Array.from({length:69},(_,i)=>i+1);
+    const cold = allNs.filter(n=>!mc[n]);
+    if (cold.length >= 2 && hot.length >= 3) {
+      const mixed = [...shuffle(hot).slice(0,3), ...shuffle(cold).slice(0,2)].sort((a,b)=>a-b);
+      strategies.push({ name:'🔥❄️ Hot & Cold', main:mixed, pb:Math.floor(Math.random()*26)+1, desc:'3 frequent + 2 rare numbers' });
+    }
+  }
+
+  // 4. Spread
+  const s = Math.floor(Math.random()*25)+1;
+  const spread = [s, Math.min(69,s+10), Math.min(69,s+22), Math.min(69,s+36), Math.min(69,s+50)];
+  strategies.push({ name:'📐 Evenly Spread', main:spread, pb:Math.floor(Math.random()*26)+1, desc:'Numbers evenly distributed across range' });
+
+  // 5. Calendar-inspired
+  const cal = [Math.floor(Math.random()*28)+1, Math.floor(Math.random()*12)+1, ...shuffle(Array.from({length:36},(_,i)=>i+14)).slice(0,3)];
+  const cal5 = [...new Set(cal)].sort((a,b)=>a-b).slice(0,5);
+  while(cal5.length<5) cal5.push(Math.floor(Math.random()*69)+1);
+  strategies.push({ name:'🎂 Calendar-Inspired', main:cal5.slice(0,5).sort((a,b)=>a-b), pb:Math.floor(Math.random()*26)+1, desc:'Day, month + random fills' });
+
+  let html = `<div class="section-divider">🍀 Lucky Combinations</div>`;
+
+  strategies.forEach(s => {
+    const fmt = `${s.main.join(',')} PB:${s.pb}`;
+    html += `<div class="card" style="margin-bottom:12px;">
+      <div style="font-weight:600;margin-bottom:6px;font-size:14px;">${s.name}</div>
+      <div style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:10px;">${s.desc}</div>
+      <div class="balls">
+        ${s.main.map(n=>`<div class="ball main">${String(n).padStart(2,'0')}</div>`).join('')}
+        <div class="ball pb">${String(s.pb).padStart(2,'0')}</div>
+      </div>
+      <button class="copy-btn" onclick="copyToSearch('${fmt}')">📋 ${fmt} — Copy to checker</button>
+    </div>`;
+  });
+
+  html += `<p style="font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;margin-top:8px;">All combinations have equal odds. Play responsibly.</p>`;
+  document.getElementById('analysis-display').innerHTML = html;
+  showTab('analysis', document.querySelectorAll('.tab')[1]);
+}
+
+function copyToSearch(fmt) {
+  document.getElementById('search-input').value = fmt;
+  toast(`Copied "${fmt}" to checker → click Check Numbers!`);
+}
+</script>
+</body>
+</html>
